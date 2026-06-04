@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================
-# AI Agent Tools One-Click Installer for WSL / Linux / macOS
+# AI Agent Tools Installer - 一行命令安装单个 AI Agent 工具
 # ============================================================
-# Usage:
-#   curl -fsSL https://raw.githubusercontent.com/huanghhcri/ai-agent-installer/main/scripts/install.sh | bash
+# 用法:
+#   curl -fsSL https://raw.githubusercontent.com/huanghhcri/ai-agent-installer/main/scripts/install.sh | bash -s -- <工具名>
 #
-#   Or with options:
-#   curl -fsSL .../install.sh | bash -s -- --cli
-#   curl -fsSL .../install.sh | bash -s -- --help
+# 示例:
+#   curl -fsSL .../install.sh | bash -s -- claude-code
+#   curl -fsSL .../install.sh | bash -s -- codex-cli
+#   curl -fsSL .../install.sh | bash -s -- hermes
 # ============================================================
 
 set -e
@@ -18,7 +19,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 BOLD='\033[1m'
 
 # ============================================================
@@ -27,9 +28,9 @@ BOLD='\033[1m'
 
 print_header() {
     echo ""
-    echo -e "${MAGENTA}============================================================${NC}"
+    echo -e "${MAGENTA}  ═══════════════════════════════════════════════════════${NC}"
     echo -e "${MAGENTA}  $1${NC}"
-    echo -e "${MAGENTA}============================================================${NC}"
+    echo -e "${MAGENTA}  ═══════════════════════════════════════════════════════${NC}"
     echo ""
 }
 
@@ -54,230 +55,207 @@ command_exists() {
 }
 
 # ============================================================
-# Parse Arguments
+# Show Help if No Tool Specified
 # ============================================================
 
-INSTALL_CLI=true
+TOOL="$1"
 
-for arg in "$@"; do
-    case $arg in
-        --cli)
-            INSTALL_CLI=true
-            shift
-            ;;
-        --help|-h)
-            echo "Usage: install.sh [OPTIONS]"
-            echo ""
-            echo "Options:"
-            echo "  --cli    Install CLI tools only (default)"
-            echo "  --help   Show this help"
-            echo ""
-            echo "One-line install:"
-            echo "  curl -fsSL https://raw.githubusercontent.com/huanghhcri/ai-agent-installer/main/scripts/install.sh | bash"
-            exit 0
-            ;;
-    esac
-done
+if [ -z "$TOOL" ]; then
+    echo ""
+    echo -e "  ${MAGENTA}🤖 AI Agent Installer${NC}"
+    echo ""
+    echo -e "  用法: 传入工具名作为参数"
+    echo ""
+    echo -e "  命令行工具:"
+    echo -e "    ${BOLD}claude-code${NC}   安装 Claude Code CLI"
+    echo -e "    ${BOLD}codex-cli${NC}     安装 Codex CLI (v0.80.0)"
+    echo -e "    ${BOLD}hermes${NC}        安装 Hermes Agent"
+    echo ""
+    echo -e "  一行命令示例:"
+    echo -e "    ${CYAN}curl -fsSL https://raw.githubusercontent.com/huanghhcri/ai-agent-installer/main/scripts/install.sh | bash -s -- claude-code${NC}"
+    echo ""
+    echo -e "  ${YELLOW}桌面应用（Claude Desktop、ChatGPT Desktop 等）请在 Windows PowerShell 中安装：${NC}"
+    echo -e "    ${CYAN}winget install Anthropic.Claude${NC}"
+    echo -e "    ${CYAN}winget install OpenAI.ChatGPT${NC}"
+    echo -e "    ${CYAN}winget install Cursor.Cursor${NC}"
+    echo ""
+    exit 0
+fi
 
 # ============================================================
-# Detect OS
+# Install Node.js if Needed
 # ============================================================
 
-detect_os() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "macos"
-    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        if grep -qi microsoft /proc/version 2>/dev/null; then
-            echo "wsl"
-        else
-            echo "linux"
-        fi
+install_node() {
+    if command_exists node; then
+        NODE_VERSION=$(node --version)
+        print_success "Node.js $NODE_VERSION is available"
+        return 0
+    fi
+
+    print_step "Node.js not found. Installing..."
+    
+    if command_exists apt-get; then
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - 2>/dev/null
+        sudo apt-get install -y nodejs 2>/dev/null
+    elif command_exists yum; then
+        curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo -E bash - 2>/dev/null
+        sudo yum install -y nodejs 2>/dev/null
+    elif command_exists brew; then
+        brew install node 2>/dev/null
     else
-        echo "unknown"
+        print_fail "Cannot install Node.js automatically."
+        echo "    → Please install manually: https://nodejs.org/"
+        exit 1
+    fi
+
+    if command_exists node; then
+        NODE_VERSION=$(node --version)
+        print_success "Node.js $NODE_VERSION installed"
+    else
+        print_fail "Node.js installation failed"
+        exit 1
     fi
 }
 
-OS=$(detect_os)
-
 # ============================================================
-# Pre-flight Checks
+# Install Tools
 # ============================================================
 
-print_header "AI Agent Tools Installer"
+case "$TOOL" in
+    claude-code)
+        print_header "Installing Claude Code CLI"
+        echo "  Anthropic 官方命令行编程 Agent"
+        echo ""
 
-echo -e "  Detected OS: ${BOLD}$OS${NC}"
-echo ""
-
-# ============================================================
-# CLI Tools Installation
-# ============================================================
-
-if $INSTALL_CLI; then
-    print_header "CLI Tools Installation"
-    
-    # ─────────────────────────────────────────────────────
-    # Node.js (required for most CLI tools)
-    # ─────────────────────────────────────────────────────
-    if ! command_exists node; then
-        print_step "Node.js not found. Installing..."
-        
-        case $OS in
-            macos)
-                if command_exists brew; then
-                    brew install node
-                else
-                    print_fail "Homebrew not found. Please install Node.js manually:"
-                    echo "    → https://nodejs.org/"
-                    exit 1
-                fi
-                ;;
-            wsl|linux)
-                # Install Node.js via nvm or direct download
-                if command_exists apt-get; then
-                    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-                    sudo apt-get install -y nodejs
-                elif command_exists yum; then
-                    curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo -E bash -
-                    sudo yum install -y nodejs
-                else
-                    print_fail "Cannot install Node.js automatically."
-                    echo "    → Please install manually: https://nodejs.org/"
-                    exit 1
-                fi
-                ;;
-        esac
-        
-        if command_exists node; then
-            NODE_VERSION=$(node --version)
-            print_success "Node.js $NODE_VERSION installed"
-        else
-            print_fail "Node.js installation failed"
-            exit 1
+        if command_exists claude; then
+            print_success "Claude Code CLI is already installed"
+            echo ""
+            echo "  ─────────────────────────────────────────────────────" 
+            echo -e "  ${BOLD}接下来怎么做:${NC}"
+            echo "    → 在终端输入 'claude' 启动"
+            echo "    → 首次运行会要求登录 Anthropic 账号"
+            echo "    → 验证安装: claude --version"
+            exit 0
         fi
-    else
-        NODE_VERSION=$(node --version)
-        print_success "Node.js $NODE_VERSION is available"
-    fi
-    
-    echo ""
-    
-    # ─────────────────────────────────────────────────────
-    # Claude Code CLI
-    # ─────────────────────────────────────────────────────
-    echo -e "  [${BOLD}Claude Code CLI${NC}]"
-    echo "  Anthropic's official coding agent"
-    
-    if command_exists claude; then
-        print_success "Claude Code CLI is already installed"
-    else
+
+        install_node
+
         print_step "Installing Claude Code CLI..."
         if npm install -g @anthropic-ai/claude-code 2>/dev/null; then
             print_success "Claude Code CLI installed"
         else
             print_fail "Failed to install Claude Code CLI"
             echo "    → Try manually: npm install -g @anthropic-ai/claude-code"
+            exit 1
         fi
-    fi
-    
-    echo ""
-    
-    # ─────────────────────────────────────────────────────
-    # Codex CLI
-    # ─────────────────────────────────────────────────────
-    echo -e "  [${BOLD}Codex CLI${NC}]"
-    echo "  OpenAI's coding agent (pinned to v0.80.0 for compatibility)"
-    
-    if command_exists codex; then
-        CODEX_VERSION=$(codex --version 2>/dev/null || echo "unknown")
-        print_success "Codex CLI is already installed (version: $CODEX_VERSION)"
-    else
+
+        echo ""
+        echo "  ─────────────────────────────────────────────────────"
+        echo -e "  ${BOLD}接下来怎么做:${NC}"
+        echo "    → 在终端输入 'claude' 启动"
+        echo "    → 首次运行会要求登录 Anthropic 账号"
+        echo "    → 登录后就能直接和 Claude 对话写代码了"
+        echo "    → 验证安装: claude --version"
+        ;;
+
+    codex-cli)
+        print_header "Installing Codex CLI"
+        echo "  OpenAI 命令行编程 Agent (v0.80.0)"
+        echo ""
+
+        if command_exists codex; then
+            CODEX_VERSION=$(codex --version 2>/dev/null || echo "unknown")
+            print_success "Codex CLI is already installed (version: $CODEX_VERSION)"
+            echo ""
+            echo "  ─────────────────────────────────────────────────────"
+            echo -e "  ${BOLD}接下来怎么做:${NC}"
+            echo "    → 设置 API Key: export OPENAI_API_KEY=***             echo "    → 在终端输入 'codex' 启动"
+            echo "    → 验证安装: codex --version"
+            exit 0
+        fi
+
+        install_node
+
         print_step "Installing Codex CLI v0.80.0..."
         if npm install -g @openai/codex@0.80.0 2>/dev/null; then
             print_success "Codex CLI installed (v0.80.0)"
         else
             print_fail "Failed to install Codex CLI"
             echo "    → Try manually: npm install -g @openai/codex@0.80.0"
+            exit 1
         fi
-    fi
-    
-    echo ""
-    
-    # ─────────────────────────────────────────────────────
-    # Hermes Agent
-    # ─────────────────────────────────────────────────────
-    echo -e "  [${BOLD}Hermes Agent${NC}]"
-    echo "  Open-source AI agent by Nous Research"
-    
-    if command_exists hermes; then
-        print_success "Hermes Agent is already installed"
-    else
+
+        echo ""
+        echo "  ─────────────────────────────────────────────────────"
+        echo -e "  ${BOLD}接下来怎么做:${NC}"
+        echo "    → 设置 API Key: export OPENAI_API_KEY=***             echo "    → 在终端输入 'codex' 启动"
+        echo "    → 可用国产模型: 创建 ~/.codex/config.toml 配置"
+        echo "    → 验证安装: codex --version (应显示 0.80.0)"
+        echo ""
+        echo -e "  ${YELLOW}使用 MiMo 国产模型:${NC}"
+        echo "    mkdir -p ~/.codex"
+        echo "    cat > ~/.codex/config.toml << 'EOF'"
+        echo '    model = "mimo-v2.5-pro"'
+        echo '    provider = "openai"'
+        echo '    base_url = "https://token-plan-cn.xiaomimimo.com/v1"'
+        echo '    wire_api = "chat"'
+        echo "    EOF"
+        ;;
+
+    hermes)
+        print_header "Installing Hermes Agent"
+        echo "  Nous Research 开源 AI Agent"
+        echo ""
+
+        if command_exists hermes; then
+            print_success "Hermes Agent is already installed"
+            echo ""
+            echo "  ─────────────────────────────────────────────────────"
+            echo -e "  ${BOLD}接下来怎么做:${NC}"
+            echo "    → 运行 'hermes setup' 配置模型"
+            echo "    → 运行 'hermes doctor' 检查配置"
+            echo "    → 文档: https://hermes-agent.nousresearch.com/docs"
+            exit 0
+        fi
+
         print_step "Installing Hermes Agent..."
         if curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash 2>/dev/null; then
             print_success "Hermes Agent installed"
         else
             print_fail "Failed to install Hermes Agent"
-            echo "    → Try manually: curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
+            echo "    → Try manually:"
+            echo "    → curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
+            exit 1
         fi
-    fi
-    
-    echo ""
-    
-    # ─────────────────────────────────────────────────────
-    # OpenCode (optional)
-    # ─────────────────────────────────────────────────────
-    echo -e "  [${BOLD}OpenCode${NC}]"
-    echo "  Open-source coding agent"
-    
-    if command_exists opencode; then
-        print_success "OpenCode is already installed"
-    else
-        print_step "Installing OpenCode..."
-        if npm install -g @anthropic-ai/opencode 2>/dev/null; then
-            print_success "OpenCode installed"
-        else
-            # Try alternative installation
-            print_warn "OpenCode not available via npm. Trying alternative..."
-            if curl -fsSL https://opencode.ai/install | bash 2>/dev/null; then
-                print_success "OpenCode installed"
-            else
-                print_fail "Failed to install OpenCode"
-                echo "    → Visit: https://opencode.ai"
-            fi
-        fi
-    fi
-fi
 
-# ============================================================
-# Summary
-# ============================================================
+        echo ""
+        echo "  ─────────────────────────────────────────────────────"
+        echo -e "  ${BOLD}接下来怎么做:${NC}"
+        echo "    → 运行 'hermes setup' 配置模型和 API Key"
+        echo "    → 运行 'hermes doctor' 检查配置"
+        echo "    → 文档: https://hermes-agent.nousresearch.com/docs"
+        echo "    → 中文 Skills: https://github.com/huanghhcri/hermes-skills"
+        echo ""
+        echo -e "  ${YELLOW}推荐 API 提供商:${NC}"
+        echo "    → OpenRouter (支持多种模型): https://openrouter.ai"
+        echo "    → MiMo (国产，无需代理): https://mimo.xiaomi.com"
+        echo "    → DeepSeek (国产，无需代理): https://platform.deepseek.com"
+        ;;
 
-print_header "Installation Summary"
-
-echo -e "  ${BOLD}CLI Tools:${NC}"
-echo ""
-
-for tool in "claude:Claude Code CLI" "codex:Codex CLI" "hermes:Hermes Agent" "opencode:OpenCode"; do
-    cmd="${tool%%:*}"
-    name="${tool##*:}"
-    if command_exists "$cmd"; then
-        echo -e "    ${GREEN}✓${NC} $name"
-    else
-        echo -e "    ${RED}✗${NC} $name"
-    fi
-done
-
-echo ""
-echo -e "  ${YELLOW}─────────────────────────────────────────────────────${NC}"
-echo ""
-echo -e "  ${BOLD}Next Steps:${NC}"
-echo ""
-echo "  1. Configure your API keys:"
-echo "     → Claude Code: claude config"
-echo "     → Codex CLI: export OPENAI_API_KEY=your_key"
-echo "     → Hermes Agent: hermes setup"
-echo ""
-echo -e "  ${YELLOW}For Chinese developers:${NC}"
-echo "  → Configure proxy: export https_proxy=http://127.0.0.1:7897"
-echo "  → WSL proxy: export https_proxy=http://\$(cat /etc/resolv.conf | grep nameserver | awk '{print \$2}'):7897"
-echo "  → Use MiMo API: see https://github.com/huanghhcri/hermes-skills"
-echo ""
+    *)
+        print_fail "Unknown tool: $TOOL"
+        echo ""
+        echo "  可用的工具:"
+        echo "    claude-code   Claude Code CLI"
+        echo "    codex-cli     Codex CLI (v0.80.0)"
+        echo "    hermes        Hermes Agent"
+        echo ""
+        echo "  桌面应用请在 Windows PowerShell 中安装:"
+        echo "    winget install Anthropic.Claude"
+        echo "    winget install OpenAI.ChatGPT"
+        echo "    winget install Cursor.Cursor"
+        echo ""
+        exit 1
+        ;;
+esac
