@@ -11,16 +11,25 @@
 ## 📖 目录
 
 - [这是什么？](#这是什么)
-- [我能装哪些工具？](#我能装哪些工具)
+- [工具总览](#工具总览)
 - [Windows 桌面应用](#windows-桌面应用)
   - [Claude Desktop](#1-claude-desktop)
   - [ChatGPT Desktop](#2-chatgpt-desktop)
   - [Cursor](#3-cursor)
   - [Codex Desktop](#4-codex-desktop)
+  - [Windsurf](#5-windsurf)
+  - [Trae](#6-trae)
+  - [Zed](#7-zed)
+  - [GitHub Copilot](#8-github-copilot)
 - [命令行工具（CLI）](#命令行工具cli)
   - [Claude Code CLI](#1-claude-code-cli)
   - [Codex CLI](#2-codex-cli)
   - [Hermes Agent](#3-hermes-agent)
+  - [Aider](#4-aider)
+  - [OpenCode](#5-opencode)
+  - [Amazon Q Developer CLI](#6-amazon-q-developer-cli)
+  - [GitHub Copilot CLI](#7-github-copilot-cli)
+  - [Cline](#8-cline)
 - [中国开发者专区](#中国开发者专区)
 - [常见问题](#常见问题)
 
@@ -39,24 +48,33 @@
 
 ---
 
-## 我能装哪些工具？
+## 工具总览
 
 ### 🖥️ 桌面应用（有图形界面，鼠标点点就能用）
 
-| 工具 | 开发商 | 一句话介绍 | 适用人群 |
-|------|--------|-----------|----------|
-| **Claude Desktop** | Anthropic | Claude AI 的桌面版，可以直接和 Claude 对话 | 所有人 |
-| **ChatGPT Desktop** | OpenAI | ChatGPT 的桌面版 | 所有人 |
-| **Cursor** | Cursor | 基于 VS Code 的 AI 编程编辑器 | 开发者 |
-| **Codex Desktop** | OpenAI | OpenAI 的编程 Agent 桌面版 | 开发者 |
+| 工具 | 开发商 | 一句话介绍 | 适用人群 | 平台 |
+|------|--------|-----------|----------|------|
+| **Claude Desktop** | Anthropic | Claude AI 桌面版 | 所有人 | Win/Mac |
+| **ChatGPT Desktop** | OpenAI | ChatGPT 桌面版 | 所有人 | Win/Mac |
+| **Cursor** | Cursor Inc. | AI 编程编辑器 | 开发者 | Win/Mac/Linux |
+| **Codex Desktop** | OpenAI | 编程 Agent 桌面版 | 开发者 | Windows |
+| **Windsurf** | Codeium | AI 编程编辑器（免费额度多） | 开发者 | Win/Mac/Linux |
+| **Trae** | 字节跳动 | 中文友好的 AI 编辑器 | 开发者 | Win/Mac |
+| **Zed** | Zed Industries | 高性能编辑器，内置 AI | 开发者 | Mac/Linux |
+| **GitHub Copilot** | GitHub | VS Code 中的 AI 助手 | 开发者 | Win/Mac/Linux |
 
 ### ⌨️ 命令行工具（在终端里运行，适合开发者）
 
-| 工具 | 开发商 | 一句话介绍 | 适用人群 |
-|------|--------|-----------|----------|
-| **Claude Code CLI** | Anthropic | 在终端里用 Claude 写代码、改 Bug | 开发者 |
-| **Codex CLI** | OpenAI | 在终端里用 GPT 写代码 | 开发者 |
-| **Hermes Agent** | Nous Research | 开源 AI Agent，支持多种模型和平台 | 高级开发者 |
+| 工具 | 开发商 | 一句话介绍 | 适用人群 | 平台 |
+|------|--------|-----------|----------|------|
+| **Claude Code CLI** | Anthropic | 终端里的 Claude 编程 Agent | 开发者 | 跨平台 |
+| **Codex CLI** | OpenAI | 终端里的 GPT 编程 Agent | 开发者 | 跨平台 |
+| **Hermes Agent** | Nous Research | 开源多模型 AI Agent | 高级开发者 | 跨平台 |
+| **Aider** | Paul Gauthier | 最流行的终端 AI 编程工具 | 开发者 | 跨平台 |
+| **OpenCode** | OpenCode | 开源终端编程 Agent | 开发者 | 跨平台 |
+| **Amazon Q CLI** | AWS | AWS 的 AI 命令行助手 | 开发者/运维 | 跨平台 |
+| **GitHub Copilot CLI** | GitHub | GitHub 的 AI 命令行助手 | 开发者 | 跨平台 |
+| **Cline** | Cline | VS Code 中的自主编程 Agent | 开发者 | 跨平台 |
 
 ---
 
@@ -175,6 +193,112 @@ winget install <找到的ID>
 
 ---
 
+### 5. Windsurf
+
+**是什么？** Codeium 出品的 AI 编程编辑器，和 Cursor 类似但免费额度更多。支持代码补全、AI 对话、代码解释等功能。
+
+**一行命令安装：**
+
+```powershell
+winget install Codeium.Windsurf
+```
+
+**安装后怎么用？**
+
+1. 从开始菜单搜索 **Windsurf** 并打开
+2. 使用 Google 账号或邮箱注册登录
+3. 免费版有较多额度，Pro 版 $15/月
+4. 使用方式和 Cursor 类似：
+   - `Ctrl + L` 打开 AI 对话
+   - `Tab` 接受 AI 代码补全
+   - 选中代码后 `Ctrl + L` 解释代码
+
+**优势：** 免费额度比 Cursor 多，对预算有限的开发者很友好。
+
+---
+
+### 6. Trae
+
+**是什么？** 字节跳动出品的 AI 编程编辑器，对中文开发者特别友好。内置了豆包大模型，中文理解能力强。
+
+**一行命令安装：**
+
+```powershell
+winget install ByteDance.Trae
+```
+
+**如果 winget 找不到，手动安装：**
+- 访问 https://www.trae.ai 下载安装包
+
+**安装后怎么用？**
+
+1. 从开始菜单搜索 **Trae** 并打开
+2. 使用手机号或邮箱注册（支持中文界面）
+3. 内置豆包模型，国内直连无需代理
+4. 使用方式：
+   - `Ctrl + L` 打开 AI 对话
+   - 内置中文代码注释生成
+   - 支持中文需求描述
+
+**优势：** 国内直连、中文友好、免费使用。
+
+---
+
+### 7. Zed
+
+**是什么？** 用 Rust 写的高性能代码编辑器，启动极快。内置 AI 助手功能，支持多种 AI 模型。
+
+**一行命令安装：**
+
+```powershell
+winget install Zed.Zed
+```
+
+**安装后怎么用？**
+
+1. 从开始菜单搜索 **Zed** 并打开
+2. 界面简洁，启动速度非常快
+3. AI 功能需要配置：
+   - 打开设置（`Ctrl + ,`）
+   - 配置 AI 提供商的 API Key
+4. 使用 `Ctrl + Enter` 打开 AI 面板
+
+**注意：** 目前 Zed 主要支持 macOS 和 Linux，Windows 版本还在开发中。
+
+---
+
+### 8. GitHub Copilot
+
+**是什么？** GitHub 官方的 AI 编程助手，以 VS Code 扩展形式运行。支持代码补全、代码解释、聊天对话等。
+
+**安装方式：**
+
+GitHub Copilot 是 VS Code 扩展，需要先安装 VS Code，然后安装扩展：
+
+```powershell
+# 1. 安装 VS Code（如果还没装）
+winget install Microsoft.VisualStudioCode
+
+# 2. 安装 GitHub Copilot 扩展
+code --install-extension GitHub.copilot
+
+# 3. 安装 GitHub Copilot Chat 扩展
+code --install-extension GitHub.copilot-chat
+```
+
+**安装后怎么用？**
+
+1. 打开 VS Code
+2. 左侧会看到 Copilot 图标，点击登录 GitHub 账号
+3. 使用方式：
+   - 写代码时自动补全（灰色提示，按 `Tab` 接受）
+   - `Ctrl + I` 打开内联 AI 对话
+   - `Ctrl + Shift + I` 打开 Copilot Chat 面板
+
+**价格：** 个人版 $10/月，有 30 天免费试用。学生和开源维护者免费。
+
+---
+
 ## 命令行工具（CLI）
 
 > ⚠️ 以下工具需要在**终端**中运行。
@@ -183,13 +307,17 @@ winget install <找到的ID>
 > - **macOS 用户**：打开「终端」（Terminal）
 > - **Linux 用户**：打开你的终端模拟器
 >
-> **前提条件**：需要安装 [Node.js](https://nodejs.org/)（JavaScript 运行环境）。
+> **前提条件**：部分工具需要 [Node.js](https://nodejs.org/) 或 [Python](https://python.org/)。
 >
-> 如果你还没安装 Node.js，先运行这一行：
+> 如果你还没安装，先运行：
 > ```powershell
+> # 安装 Node.js
 > winget install OpenJS.NodeJS.LTS
+>
+> # 安装 Python
+> winget install Python.Python.3.12
 > ```
-> 安装后**重启终端**，然后才能安装下面的工具。
+> 安装后**重启终端**。
 
 ---
 
@@ -230,7 +358,7 @@ claude --help             # 查看帮助
 
 ```bash
 claude --version
-# 应该显示类似：claude-code x.x.x
+# 应该显示版本号
 ```
 
 ---
@@ -254,11 +382,8 @@ npm install -g @openai/codex@0.80.0
 1. 设置 OpenAI API Key：
    ```bash
    # Windows PowerShell
-   $env:OPENAI_API_KEY = "你的API密钥"
-   
-   # Linux / macOS / WSL
-   export OPENAI_API_KEY=你的API密钥
-   ```
+   $env:OPENAI_API_KEY=sk-***   # Linux / macOS / WSL
+   export OPENAI_API_KEY=sk-...   ```
    
    > 💡 API Key 在 https://platform.openai.com/api-keys 获取
 
@@ -274,10 +399,7 @@ npm install -g @openai/codex@0.80.0
 如果你想用 MiMo 而不是 OpenAI，创建配置文件：
 
 ```bash
-# 创建配置目录
 mkdir -p ~/.codex
-
-# 写入配置
 cat > ~/.codex/config.toml << 'EOF'
 model = "mimo-v2.5-pro"
 provider = "openai"
@@ -285,14 +407,7 @@ base_url = "https://token-plan-cn.xiaomimimo.com/v1"
 wire_api = "chat"
 EOF
 
-# 设置 MiMo API Key
-export OPENAI_API_KEY=你的MiMo密钥
-```
-
-**验证安装：**
-
-```bash
-codex --version
+export OPENAI_API_KEY=你的MiMo...dex --version
 # 应该显示：0.80.0
 ```
 
@@ -327,8 +442,7 @@ curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scri
    nano ~/.hermes/.env
    
    # 添加你的 API Key
-   OPENROUTER_API_KEY=你的密钥
-   ```
+   OPENROUTER_API_KEY=***   ```
    
    > 💡 OpenRouter API Key 在 https://openrouter.ai/keys 获取
 
@@ -355,6 +469,197 @@ hermes skills list        # 查看已安装的技能
 - 📖 官方文档：https://hermes-agent.nousresearch.com/docs
 - 💻 GitHub：https://github.com/NousResearch/hermes-agent
 - 🎯 中文 Skills：https://github.com/huanghhcri/hermes-skills
+
+---
+
+### 4. Aider
+
+**是什么？** 目前最流行的终端 AI 编程工具。支持 20+ 种 AI 模型（GPT-4、Claude、DeepSeek、Gemini 等），能直接读写你的代码文件、自动 git commit。完全开源。
+
+**一行命令安装：**
+
+```bash
+pip install aider-chat
+```
+
+**或者用 pipx（推荐，隔离环境）：**
+
+```bash
+pipx install aider-chat
+```
+
+**安装后怎么用？**
+
+1. 设置 API Key（以 OpenAI 为例）：
+   ```bash
+   export OPENAI_API_KEY=sk-...   ```
+
+2. 进入你的项目目录，启动 Aider：
+   ```bash
+   cd your-project
+   aider
+   ```
+
+3. 直接用自然语言描述你想改什么：
+   ```
+   > 帮我给 main.py 添加日志功能
+   > 修复 login 函数的 bug
+   > 重构 utils.py，把重复代码提取成公共方法
+   ```
+
+**使用其他模型：**
+
+```bash
+# 使用 Claude
+aider --model claude-3-5-sonnet-20241022
+
+# 使用 DeepSeek
+aider --model deepseek --api-key deepseek=你的K...n使用本地模型（Ollama）
+aider --model ollama/deepseek-coder
+```
+
+**常用命令：**
+
+```bash
+aider                      # 启动（使用默认模型）
+aider --model MODEL        # 指定模型
+aider --help               # 查看帮助
+```
+
+**优势：** 完全开源、支持模型最多、Git 集成好。
+
+---
+
+### 5. OpenCode
+
+**是什么？** 一个开源的终端编程 Agent，界面美观，支持多种 AI 模型。
+
+**一行命令安装：**
+
+```bash
+npm install -g @anthropic-ai/opencode
+```
+
+**如果上面不行，用官方安装脚本：**
+
+```bash
+curl -fsSL https://opencode.ai/install | bash
+```
+
+**安装后怎么用？**
+
+1. 进入项目目录：
+   ```bash
+   cd your-project
+   opencode
+   ```
+
+2. 在交互界面中描述你想做什么
+
+**配置 API Key：**
+
+```bash
+# 使用 OpenAI
+export OPENAI_API_KEY=sk-... # 使用 Anthropic
+export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+---
+
+### 6. Amazon Q Developer CLI
+
+**是什么？** AWS 出品的 AI 命令行助手。不仅能写代码，还能帮你管理 AWS 资源、调试问题、生成命令。
+
+**一行命令安装：**
+
+```bash
+# macOS
+brew install amazon-q
+
+# Linux
+curl -fsSL https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-linux.tar.gz | tar -xz && ./q/install.sh
+
+# Windows (winget)
+winget install Amazon.QCLI
+```
+
+**安装后怎么用？**
+
+1. 运行认证：
+   ```bash
+   q login
+   ```
+   按提示在浏览器中登录 AWS Builder ID（免费注册）
+
+2. 使用方式：
+   ```bash
+   q chat                        # AI 对话
+   q chat "怎么列出所有 S3 存储桶"  # 直接提问
+   ```
+
+**优势：** 免费使用、AWS 资源管理、命令行补全。
+
+---
+
+### 7. GitHub Copilot CLI
+
+**是什么？** GitHub 官方的命令行 AI 助手。可以在终端里用自然语言执行命令。
+
+**一行命令安装：**
+
+```bash
+# 需要先安装 GitHub CLI
+winget install GitHub.cli
+
+# 然后安装 Copilot 扩展
+gh extension install github/gh-copilot
+```
+
+**安装后怎么用？**
+
+1. 登录 GitHub：
+   ```bash
+   gh auth login
+   ```
+
+2. 使用方式：
+   ```bash
+   gh copilot suggest "列出所有大于 100MB 的文件"  # 命令建议
+   gh copilot explain "git rebase -i HEAD~3"      # 解释命令
+   ```
+
+**优势：** GitHub 生态集成、命令解释、安全提示。
+
+---
+
+### 8. Cline
+
+**是什么？** VS Code 中的自主编程 Agent。它能自己读写文件、运行命令、浏览网页，像一个真正的 AI 程序员。
+
+**安装方式：**
+
+Cline 是 VS Code 扩展：
+
+```powershell
+# 安装 VS Code（如果还没装）
+winget install Microsoft.VisualStudioCode
+
+# 安装 Cline 扩展
+code --install-extension saoudrizwan.claude-dev
+```
+
+**安装后怎么用？**
+
+1. 打开 VS Code
+2. 左侧活动栏会看到 Cline 图标（机器人图标）
+3. 点击图标打开 Cline 面板
+4. 配置 API Key（支持多种模型）：
+   - 点击设置齿轮 ⚙️
+   - 选择 API Provider（Anthropic、OpenAI、OpenRouter 等）
+   - 填入 API Key
+5. 在对话框中描述你想做什么，Cline 会自动执行
+
+**优势：** 自主性最强、能自己运行命令、支持多种模型、完全开源。
 
 ---
 
@@ -401,24 +706,39 @@ export https_proxy=http://${WINDOWS_HOST}:7897
 **使用 MiMo 配置 Claude Code CLI：**
 
 ```bash
-# 设置 MiMo API
-export ANTHROPIC_API_KEY=你的MiMo密钥
-export ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic
+export ANTHROPIC_API_KEY=你的MiMo...export ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic
+claude
 ```
 
-**使用 DeepSeek 配置 Codex CLI：**
+**使用 MiMo 配置 Codex CLI：**
 
 ```bash
-# 创建配置
 mkdir -p ~/.codex
 cat > ~/.codex/config.toml << 'EOF'
-model = "deepseek-chat"
+model = "mimo-v2.5-pro"
 provider = "openai"
-base_url = "https://api.deepseek.com/v1"
+base_url = "https://token-plan-cn.xiaomimimo.com/v1"
 wire_api = "chat"
 EOF
 
-export OPENAI_API_KEY=你的DeepSeek密钥
+export OPENAI_API_KEY=你的MiMo...
+```
+
+**使用 DeepSeek 配置 Aider：**
+
+```bash
+export DEEPSEEK_API_KEY=你的Deep...
+aider --model deepseek --api-key deepseek=$DEEPSEEK_API_KEY
+```
+
+**使用 MiMo 配置 Hermes Agent：**
+
+```bash
+hermes setup
+# 选择 custom provider
+# Base URL: https://token-plan-cn.xiaomimimo.com/v1
+# API Key: 你的 MiMo API Key
+# Model: mimo-v2.5-pro
 ```
 
 ---
@@ -439,6 +759,14 @@ A: 需要安装 App Installer：
 A: 需要先安装 Node.js：
 ```powershell
 winget install OpenJS.NodeJS.LTS
+```
+安装后**重启终端**，然后再试。
+
+**Q: `pip` 命令不存在怎么办？**
+
+A: 需要先安装 Python：
+```powershell
+winget install Python.Python.3.12
 ```
 安装后**重启终端**，然后再试。
 
@@ -463,6 +791,20 @@ source ~/.bashrc
 
 ### 使用类
 
+**Q: 我应该选哪个工具？**
+
+A:
+
+| 你的需求 | 推荐工具 |
+|----------|----------|
+| 只是想和 AI 聊天 | Claude Desktop 或 ChatGPT Desktop |
+| 想用 AI 写代码（图形界面） | Cursor 或 Windsurf |
+| 想用 AI 写代码（命令行） | Claude Code CLI 或 Aider |
+| 想要免费方案 | Windsurf + DeepSeek / Trae |
+| 想要最强大的开源 Agent | Hermes Agent |
+| 国内用户不想折腾代理 | Trae / DeepSeek + Aider |
+| 想要自主性最强的 Agent | Cline |
+
 **Q: Codex CLI 为什么要锁定 v0.80.0？**
 
 A: v0.80.0 是最后一个支持 `wire_api="chat"` 的版本。新版本默认使用 `wire_api="responses"`，而大部分中国国产模型（MiMo、DeepSeek 等）只支持 `/v1/chat/completions`（即 chat 模式）。如果你只用 OpenAI 官方 API，可以用最新版。
@@ -472,14 +814,6 @@ A: v0.80.0 是最后一个支持 `wire_api="chat"` 的版本。新版本默认�
 A:
 - **Claude Desktop**：图形界面，适合所有人，点点鼠标就能用
 - **Claude Code CLI**：命令行，适合开发者，可以在终端里让 Claude 直接读写你的代码文件
-
-**Q: 我应该选哪个工具？**
-
-A:
-- **只是想和 AI 聊天** → Claude Desktop 或 ChatGPT Desktop
-- **想用 AI 写代码（图形界面）** → Cursor
-- **想用 AI 写代码（命令行）** → Claude Code CLI 或 Codex CLI
-- **想要最强大的开源 Agent** → Hermes Agent
 
 **Q: 国内用哪个 AI 服务最划算？**
 
