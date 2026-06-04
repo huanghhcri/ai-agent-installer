@@ -305,13 +305,7 @@ code --install-extension GitHub.copilot-chat
 
 **是什么？** Nous Research 出品的开源 AI Agent 桌面版。支持 20+ 种 AI 模型、持久记忆、技能系统、多平台消息等。和 CLI 版本功能一样，但有图形界面，对新手更友好。
 
-**一行命令安装（Windows）：**
-
-```powershell
-winget install NousResearch.Hermes
-```
-
-**如果 winget 找不到，手动安装：**
+**手动安装：**
 
 - **Windows**：下载安装包 → https://hermes-assets.nousresearch.com/Hermes-Setup.exe
 - **macOS**：下载 DMG → https://hermes-assets.nousresearch.com/Hermes-Setup.dmg

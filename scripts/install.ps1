@@ -145,8 +145,14 @@ $Tools = @{
         Name = "Hermes Desktop"
         Desc = "Nous Research 开源 AI Agent 桌面版（支持 20+ 模型）"
         Type = "desktop"
-        Install = { winget install NousResearch.Hermes --exact --accept-package-agreements --accept-source-agreements }
-        Next = @("从开始菜单搜索 'Hermes' 并打开", "首次打开会引导配置模型和 API Key", "推荐选 OpenRouter（支持多种模型）", "文档: https://hermes-agent.nousresearch.com/docs", "桌面版: https://hermes-agent.nousresearch.com/desktop")
+        Install = {
+            $downloadPath = "$env:USERPROFILE\Desktop\Hermes-Setup.exe"
+            Write-Host "  → Downloading to $downloadPath ..." -ForegroundColor Cyan
+            Invoke-WebRequest -Uri "https://hermes-assets.nousresearch.com/Hermes-Setup.exe" -OutFile $downloadPath
+            Write-Host "  → Launching installer..." -ForegroundColor Cyan
+            Start-Process $downloadPath
+        }
+        Next = @("安装完成后从开始菜单搜索 'Hermes' 并打开", "首次打开会引导配置模型和 API Key", "推荐选 OpenRouter（支持多种模型）", "文档: https://hermes-agent.nousresearch.com/docs", "桌面版: https://hermes-agent.nousresearch.com/desktop")
     }
 
     # --- CLI Tools ---
