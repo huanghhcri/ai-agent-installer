@@ -19,7 +19,7 @@
 param(
     [Parameter(Mandatory=$false)]
     [ValidateSet(
-        'claude', 'chatgpt', 'cursor', 'codex', 'windsurf', 'trae', 'zed', 'copilot',
+        'claude', 'chatgpt', 'cursor', 'codex', 'windsurf', 'trae', 'zed', 'copilot', 'hermes-desktop',
         'claude-code', 'codex-cli', 'hermes', 'aider', 'opencode', 'amazon-q', 'copilot-cli', 'cline'
     )]
     [string]$Tool
@@ -57,6 +57,7 @@ if (-not $Tool) {
     Write-Host "    trae         Trae (字节跳动)" -ForegroundColor Gray
     Write-Host "    zed          Zed (高性能编辑器)" -ForegroundColor Gray
     Write-Host "    copilot      GitHub Copilot (VS Code 扩展)" -ForegroundColor Gray
+    Write-Host "    hermes-desktop  Hermes Desktop (开源 AI Agent 桌面版)" -ForegroundColor Gray
     Write-Host ""
     Write-Host "  命令行工具:" -ForegroundColor Yellow
     Write-Host "    claude-code  Claude Code CLI" -ForegroundColor Gray
@@ -139,6 +140,13 @@ $Tools = @{
             code --install-extension GitHub.copilot-chat
         }
         Next = @("打开 VS Code", "左侧点击 Copilot 图标登录 GitHub 账号", "写代码时自动补全（Tab 接受），Ctrl+I 打开 AI 对话", "个人版 $10/月，学生免费")
+    }
+    'hermes-desktop' = @{
+        Name = "Hermes Desktop"
+        Desc = "Nous Research 开源 AI Agent 桌面版（支持 20+ 模型）"
+        Type = "desktop"
+        Install = { winget install NousResearch.Hermes --exact --accept-package-agreements --accept-source-agreements }
+        Next = @("从开始菜单搜索 'Hermes' 并打开", "首次打开会引导配置模型和 API Key", "推荐选 OpenRouter（支持多种模型）", "文档: https://hermes-agent.nousresearch.com/docs", "桌面版: https://hermes-agent.nousresearch.com/desktop")
     }
 
     # --- CLI Tools ---

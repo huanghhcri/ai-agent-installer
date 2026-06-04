@@ -21,6 +21,7 @@
   - [Trae](#6-trae)
   - [Zed](#7-zed)
   - [GitHub Copilot](#8-github-copilot)
+  - [Hermes Desktop](#9-hermes-desktop)
 - [命令行工具（CLI）](#命令行工具cli)
   - [Claude Code CLI](#1-claude-code-cli)
   - [Codex CLI](#2-codex-cli)
@@ -62,6 +63,7 @@
 | **Trae** | 字节跳动 | 中文友好的 AI 编辑器 | 开发者 | Win/Mac |
 | **Zed** | Zed Industries | 高性能编辑器，内置 AI | 开发者 | Mac/Linux |
 | **GitHub Copilot** | GitHub | VS Code 中的 AI 助手 | 开发者 | Win/Mac/Linux |
+| **Hermes Desktop** | Nous Research | 开源 AI Agent 桌面版（支持 20+ 模型） | 所有人 | Win/Mac/Linux |
 
 ### ⌨️ 命令行工具（在终端里运行，适合开发者）
 
@@ -296,6 +298,44 @@ code --install-extension GitHub.copilot-chat
    - `Ctrl + Shift + I` 打开 Copilot Chat 面板
 
 **价格：** 个人版 $10/月，有 30 天免费试用。学生和开源维护者免费。
+
+---
+
+### 9. Hermes Desktop
+
+**是什么？** Nous Research 出品的开源 AI Agent 桌面版。支持 20+ 种 AI 模型、持久记忆、技能系统、多平台消息等。和 CLI 版本功能一样，但有图形界面，对新手更友好。
+
+**一行命令安装（Windows）：**
+
+```powershell
+winget install NousResearch.Hermes
+```
+
+**如果 winget 找不到，手动安装：**
+
+- **Windows**：下载安装包 → https://hermes-assets.nousresearch.com/Hermes-Setup.exe
+- **macOS**：下载 DMG → https://hermes-assets.nousresearch.com/Hermes-Setup.dmg
+- **Linux**：前往 GitHub Releases → https://github.com/NousResearch/hermes-agent/releases
+
+**安装后怎么用？**
+
+1. 从开始菜单搜索 **Hermes** 并打开
+2. 首次打开会引导你配置：
+   - 选择 AI 模型（推荐 OpenRouter，支持多种模型）
+   - 填入 API Key
+3. 配置完成后就能直接对话了
+
+**优势：**
+- 🆓 完全开源，免费使用
+- 🧠 支持 20+ 种模型（OpenAI、Claude、DeepSeek、Gemini、MiMo 等）
+- 💾 持久记忆（跨对话记住你的偏好）
+- 🛠️ 技能系统（可扩展能力）
+- 📱 多平台消息（Telegram、Discord 等）
+
+**更多资源：**
+- 📖 官方文档：https://hermes-agent.nousresearch.com/docs
+- 🖥️ 桌面版页面：https://hermes-agent.nousresearch.com/desktop
+- 💻 GitHub：https://github.com/NousResearch/hermes-agent
 
 ---
 
