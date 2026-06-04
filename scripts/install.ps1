@@ -7,7 +7,7 @@
     CLI 工具: claude-code, codex-cli, hermes, aider, opencode, amazon-q, copilot-cli, cline
 .EXAMPLE
     winget install Anthropic.Claude
-    winget install Cursor.Cursor
+    winget install Anysphere.Cursor
 .EXAMPLE
     npm install -g @anthropic-ai/claude-code
     npm install -g aider-chat
@@ -92,14 +92,14 @@ $Tools = @{
         Name = "ChatGPT Desktop"
         Desc = "OpenAI 官方 ChatGPT 桌面应用"
         Type = "desktop"
-        Install = { winget install OpenAI.ChatGPT --exact --accept-package-agreements --accept-source-agreements }
+        Install = { winget install 9NBLGGH4XJL7 --accept-package-agreements --accept-source-agreements --source msstore }
         Next = @("从开始菜单搜索 'ChatGPT' 并打开", "用 OpenAI 账号登录", "国内用户需要代理")
     }
     'cursor' = @{
         Name = "Cursor"
         Desc = "AI 编程编辑器（基于 VS Code）"
         Type = "desktop"
-        Install = { winget install Cursor.Cursor --exact --accept-package-agreements --accept-source-agreements }
+        Install = { winget install Anysphere.Cursor --exact --accept-package-agreements --accept-source-agreements }
         Next = @("从开始菜单搜索 'Cursor' 并打开", "去 https://cursor.sh 注册（有免费额度）", "Ctrl+L 打开 AI 对话，Ctrl+K 让 AI 写代码")
     }
     'codex' = @{
@@ -127,7 +127,7 @@ $Tools = @{
         Name = "Zed"
         Desc = "高性能代码编辑器，内置 AI"
         Type = "desktop"
-        Install = { winget install Zed.Zed --exact --accept-package-agreements --accept-source-agreements }
+        Install = { winget install ZedIndustries.Zed --exact --accept-package-agreements --accept-source-agreements }
         Next = @("从开始菜单搜索 'Zed' 并打开", "在设置中配置 AI 提供商的 API Key", "注意：Windows 版本可能还在预览阶段")
     }
     'copilot' = @{
@@ -192,8 +192,11 @@ $Tools = @{
         Name = "OpenCode"
         Desc = "开源终端编程 Agent"
         Type = "cli"
-        Prereq = "node"
-        Install = { npm install -g @anthropic-ai/opencode }
+        Prereq = $null
+        Install = {
+            Write-Host "  → Installing via official script..." -ForegroundColor Cyan
+            powershell -c "irm https://opencode.ai/install.ps1 | iex"
+        }
         Next = @("进入项目目录，输入 'opencode' 启动", "在设置中配置 API Key")
     }
     'amazon-q' = @{
@@ -201,7 +204,15 @@ $Tools = @{
         Desc = "AWS AI 命令行助手（免费）"
         Type = "cli"
         Prereq = $null
-        Install = { winget install Amazon.QCLI --exact --accept-package-agreements --accept-source-agreements }
+        Install = {
+            $zipPath = "$env:TEMP\q-windows.zip"
+            $extractPath = "$env:TEMP\q-windows"
+            Write-Host "  → Downloading..." -ForegroundColor Cyan
+            Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile $zipPath
+            Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+            & "$extractPath\q.exe"
+            Remove-Item $zipPath -Force
+        }
         Next = @("运行 'q login' 登录（免费注册 AWS Builder ID）", "使用 'q chat' 开始对话", "免费使用")
     }
     'copilot-cli' = @{

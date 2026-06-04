@@ -175,9 +175,8 @@ case "$TOOL" in
         print_header "Installing OpenCode"
         echo "  开源终端编程 Agent"
         command_exists opencode && { print_success "Already installed"; exit 0; }
-        install_node
-        print_step "Installing via npm..."
-        npm install -g @anthropic-ai/opencode 2>/dev/null && print_success "Installed" || { print_fail "Install failed"; exit 1; }
+        print_step "Installing via official script..."
+        curl -fsSL https://opencode.ai/install | bash 2>/dev/null && print_success "Installed" || { print_fail "Install failed"; exit 1; }
         echo ""
         echo "  接下来怎么做:"
         echo "    → 进入项目目录，输入 'opencode' 启动"

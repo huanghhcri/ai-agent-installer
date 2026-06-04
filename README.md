@@ -73,8 +73,8 @@
 | **Codex CLI** | OpenAI | 终端里的 GPT 编程 Agent | 开发者 | 跨平台 |
 | **Hermes Agent** | Nous Research | 开源多模型 AI Agent | 高级开发者 | 跨平台 |
 | **Aider** | Paul Gauthier | 最流行的终端 AI 编程工具 | 开发者 | 跨平台 |
-| **OpenCode** | OpenCode | 开源终端编程 Agent | 开发者 | 跨平台 |
-| **Amazon Q CLI** | AWS | AWS 的 AI 命令行助手 | 开发者/运维 | 跨平台 |
+| **OpenCode** | OpenCode.ai | 开源终端编程 Agent | 开发者 | Win/Mac/Linux |
+| **Amazon Q CLI** | AWS | AWS 的 AI 命令行助手（免费） | 开发者/运维 | Win/Mac/Linux |
 | **GitHub Copilot CLI** | GitHub | GitHub 的 AI 命令行助手 | 开发者 | 跨平台 |
 | **Cline** | Cline | VS Code 中的自主编程 Agent | 开发者 | 跨平台 |
 
@@ -121,8 +121,17 @@ winget install Anthropic.Claude
 **一行命令安装：**
 
 ```powershell
-winget install OpenAI.ChatGPT
+# Windows — 下载安装包
+Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile "$env:TEMP\q-windows.zip"
+Expand-Archive -Path "$env:TEMP\q-windows.zip" -DestinationPath "$env:TEMP\q-windows" -Force
+& "$env:TEMP\q-windows\q.exe"
 ```
+
+**如果上面不行，手动安装：**
+1. 打开 Microsoft Store（开始菜单搜索）
+2. 搜索 "ChatGPT"
+3. 点击「获取」安装
+4. 或直接访问：https://apps.microsoft.com/detail/chatgpt/9NBLGGH4XJL7
 
 **安装后怎么用？**
 
@@ -141,7 +150,7 @@ winget install OpenAI.ChatGPT
 **一行命令安装：**
 
 ```powershell
-winget install Cursor.Cursor
+winget install Anysphere.Cursor
 ```
 
 **安装后怎么用？**
@@ -253,7 +262,7 @@ winget install ByteDance.Trae
 **一行命令安装：**
 
 ```powershell
-winget install Zed.Zed
+winget install ZedIndustries.Zed
 ```
 
 **安装后怎么用？**
@@ -571,7 +580,11 @@ aider --help               # 查看帮助
 **一行命令安装：**
 
 ```bash
-npm install -g @anthropic-ai/opencode
+# macOS / Linux
+curl -fsSL https://opencode.ai/install | bash
+
+# Windows (PowerShell)
+powershell -c "irm https://opencode.ai/install.ps1 | iex"
 ```
 
 **如果上面不行，用官方安装脚本：**
