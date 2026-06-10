@@ -20,7 +20,7 @@ param(
     [Parameter(Mandatory=$false)]
     [ValidateSet(
         'claude', 'chatgpt', 'cursor', 'codex', 'windsurf', 'trae', 'zed', 'copilot', 'hermes-desktop',
-        'claude-code', 'codex-cli', 'hermes', 'aider', 'opencode', 'amazon-q', 'copilot-cli', 'cline'
+        'claude-code', 'codex-cli', 'hermes', 'aider', 'opencode', 'kiro', 'copilot-cli', 'cline'
     )]
     [string]$Tool
 )
@@ -65,7 +65,7 @@ if (-not $Tool) {
     Write-Host "    hermes       Hermes Agent" -ForegroundColor Gray
     Write-Host "    aider        Aider (最流行的终端 AI 编程工具)" -ForegroundColor Gray
     Write-Host "    opencode     OpenCode" -ForegroundColor Gray
-    Write-Host "    amazon-q     Amazon Q Developer CLI" -ForegroundColor Gray
+    Write-Host "    kiro         Kiro CLI (AWS AI 编程助手)" -ForegroundColor Gray
     Write-Host "    copilot-cli  GitHub Copilot CLI" -ForegroundColor Gray
     Write-Host "    cline        Cline (VS Code 扩展)" -ForegroundColor Gray
     Write-Host ""
@@ -92,7 +92,11 @@ $Tools = @{
         Name = "ChatGPT Desktop"
         Desc = "OpenAI 官方 ChatGPT 桌面应用"
         Type = "desktop"
-        Install = { winget install 9NBLGGH4XJL7 --accept-package-agreements --accept-source-agreements --source msstore }
+        Install = {
+            Write-Host "  ⚠ ChatGPT Desktop 没有上架 winget，正在打开 Microsoft Store..." -ForegroundColor Yellow
+            Start-Process "ms-windows-store://pdp/?productid=9NBLGGH4XJL7"
+            Write-Host "  → 请在 Microsoft Store 中搜索 'ChatGPT'（认准开发者 OpenAI）并安装" -ForegroundColor Cyan
+        }
         Next = @("从开始菜单搜索 'ChatGPT' 并打开", "用 OpenAI 账号登录", "国内用户需要代理")
     }
     'cursor' = @{
@@ -106,7 +110,7 @@ $Tools = @{
         Name = "Codex Desktop"
         Desc = "OpenAI Codex 编程 Agent 桌面版"
         Type = "desktop"
-        Install = { winget install OpenAI.Codex --accept-package-agreements --accept-source-agreements --source msstore }
+        Install = { winget install OpenAI.Codex --accept-package-agreements --accept-source-agreements }
         Next = @("从开始菜单搜索 'Codex' 并打开", "用 OpenAI 账号登录", "国内用户需要代理，或用 Codex CLI + 国产模型")
     }
     'windsurf' = @{
@@ -199,21 +203,16 @@ $Tools = @{
         }
         Next = @("进入项目目录，输入 'opencode' 启动", "在设置中配置 API Key")
     }
-    'amazon-q' = @{
-        Name = "Amazon Q Developer CLI"
-        Desc = "AWS AI 命令行助手（免费）"
+    'kiro' = @{
+        Name = "Kiro CLI"
+        Desc = "AWS AI 命令行编程助手（免费，原 Amazon Q Developer CLI）"
         Type = "cli"
         Prereq = $null
         Install = {
-            $zipPath = "$env:TEMP\q-windows.zip"
-            $extractPath = "$env:TEMP\q-windows"
-            Write-Host "  → Downloading..." -ForegroundColor Cyan
-            Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile $zipPath
-            Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-            & "$extractPath\q.exe"
-            Remove-Item $zipPath -Force
+            Write-Host "  → Installing via official script..." -ForegroundColor Cyan
+            powershell -c "irm https://cli.kiro.dev/install.ps1 | iex"
         }
-        Next = @("运行 'q login' 登录（免费注册 AWS Builder ID）", "使用 'q chat' 开始对话", "免费使用")
+        Next = @("运行 'kiro login' 登录（免费注册）", "使用 'kiro chat' 开始对话", "免费使用")
     }
     'copilot-cli' = @{
         Name = "GitHub Copilot CLI"

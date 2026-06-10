@@ -28,7 +28,7 @@
   - [Hermes Agent](#3-hermes-agent)
   - [Aider](#4-aider)
   - [OpenCode](#5-opencode)
-  - [Amazon Q Developer CLI](#6-amazon-q-developer-cli)
+  - [Kiro CLI（原 Amazon Q Developer CLI）](#6-kiro-cli原-amazon-q-developer-cli)
   - [GitHub Copilot CLI](#7-github-copilot-cli)
   - [Cline](#8-cline)
 - [CC Switch：桌面应用 API 统一管理](#cc-switch桌面应用-api-统一管理)
@@ -75,7 +75,7 @@
 | **Hermes Agent** | Nous Research | 开源多模型 AI Agent | 高级开发者 | 跨平台 |
 | **Aider** | Paul Gauthier | 最流行的终端 AI 编程工具 | 开发者 | 跨平台 |
 | **OpenCode** | OpenCode.ai | 开源终端编程 Agent | 开发者 | Win/Mac/Linux |
-| **Amazon Q CLI** | AWS | AWS 的 AI 命令行助手（免费） | 开发者/运维 | Win/Mac/Linux |
+| **Kiro CLI** | AWS | AWS AI 命令行编程助手（免费） | 开发者/运维 | Win/Mac/Linux |
 | **GitHub Copilot CLI** | GitHub | GitHub 的 AI 命令行助手 | 开发者 | 跨平台 |
 | **Cline** | Cline | VS Code 中的自主编程 Agent | 开发者 | 跨平台 |
 
@@ -123,14 +123,14 @@ winget install Anthropic.Claude
 
 **一行命令安装：**
 
-```powershell
-winget install 9NBLGGH4XJL7 --source msstore
-```
+> ⚠️ ChatGPT Desktop **没有上架 winget**，需要手动安装。
 
-**如果上面不行，手动安装：**
-1. 打开 Microsoft Store（开始菜单搜索）
-2. 搜索 "ChatGPT"
+**安装方法：**
+1. 打开 [Microsoft Store](https://apps.microsoft.com/store/apps)（开始菜单搜索 "Microsoft Store"）
+2. 搜索 **"ChatGPT"**（认准开发者是 **OpenAI**）
 3. 点击「获取」安装
+
+或者直接访问：https://openai.com/chatgpt/desktop/
 
 **安装后怎么用？**
 
@@ -177,7 +177,7 @@ winget install Anysphere.Cursor
 **一行命令安装：**
 
 ```powershell
-winget install OpenAI.Codex --source msstore
+winget install OpenAI.Codex
 ```
 
 **如果上面的命令报错，试试：**
@@ -624,40 +624,37 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 ---
 
-### 6. Amazon Q Developer CLI
+### 6. Kiro CLI（原 Amazon Q Developer CLI）
 
-**是什么？** AWS 出品的 AI 命令行助手。不仅能写代码，还能帮你管理 AWS 资源、调试问题、生成命令。
+> ⚠️ Amazon Q Developer CLI 已停止维护，现已更名为 **Kiro CLI**。详见 [官方公告](https://github.com/aws/amazon-q-developer-cli)。
+
+**是什么？** AWS 推出的 AI 命令行编程助手，支持代码生成、调试、工作流自动化。免费使用。
 
 **一行命令安装：**
 
 ```bash
-# macOS
-brew install amazon-q
-
-# Linux
-curl -fsSL https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-linux.tar.gz | tar -xz && ./q/install.sh
+# macOS / Linux
+curl -fsSL https://cli.kiro.dev/install | bash
 
 # Windows (PowerShell)
-Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile "$env:TEMP\q-windows.zip"
-Expand-Archive -Path "$env:TEMP\q-windows.zip" -DestinationPath "$env:TEMP\q-windows" -Force
-& "$env:TEMP\q-windows\q.exe"
+irm 'https://cli.kiro.dev/install.ps1' | iex
 ```
 
 **安装后怎么用？**
 
 1. 运行认证：
    ```bash
-   q login
+   kiro login
    ```
-   按提示在浏览器中登录 AWS Builder ID（免费注册）
+   按提示在浏览器中登录（免费注册）
 
 2. 使用方式：
    ```bash
-   q chat                        # AI 对话
-   q chat "怎么列出所有 S3 存储桶"  # 直接提问
+   kiro chat                        # AI 对话
+   kiro chat "怎么列出所有 S3 存储桶"  # 直接提问
    ```
 
-**优势：** 免费使用、AWS 资源管理、命令行补全。
+**优势：** 免费使用、AWS 资源管理、命令行补全、支持自定义 Agent。
 
 ---
 

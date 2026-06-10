@@ -82,7 +82,7 @@ if [ -z "$TOOL" ]; then
     echo -e "    ${BOLD}hermes${NC}        Hermes Agent (Nous Research)"
     echo -e "    ${BOLD}aider${NC}         Aider (最流行的终端 AI 编程工具)"
     echo -e "    ${BOLD}opencode${NC}      OpenCode (开源终端编程 Agent)"
-    echo -e "    ${BOLD}amazon-q${NC}      Amazon Q Developer CLI"
+    echo -e "    ${BOLD}kiro${NC}         Kiro CLI (AWS AI 编程助手)"
     echo -e "    ${BOLD}copilot-cli${NC}   GitHub Copilot CLI"
     echo -e "    ${BOLD}cline${NC}         Cline (VS Code 扩展)"
     echo ""
@@ -186,24 +186,16 @@ case "$TOOL" in
         echo "    → 在设置中配置 API Key"
         ;;
 
-    amazon-q)
-        print_header "Installing Amazon Q Developer CLI"
-        echo "  AWS AI 命令行助手（免费）"
-        command_exists q && { print_success "Already installed"; exit 0; }
-        print_step "Installing..."
-        if command_exists brew; then
-            brew install amazon-q 2>/dev/null && print_success "Installed" || { print_fail "Install failed"; exit 1; }
-        else
-            print_step "Downloading..."
-            curl -fsSL https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-linux.tar.gz -o /tmp/q-linux.tar.gz 2>/dev/null
-            tar -xzf /tmp/q-linux.tar.gz -C /tmp 2>/dev/null
-            /tmp/q/install.sh 2>/dev/null && print_success "Installed" || { print_fail "Install failed. Try: brew install amazon-q"; exit 1; }
-            rm -f /tmp/q-linux.tar.gz
-        fi
+    kiro)
+        print_header "Installing Kiro CLI"
+        echo "  AWS AI 命令行编程助手（免费，原 Amazon Q Developer CLI）"
+        command_exists kiro && { print_success "Already installed"; exit 0; }
+        print_step "Installing via official script..."
+        curl -fsSL https://cli.kiro.dev/install | bash 2>/dev/null && print_success "Installed" || { print_fail "Install failed"; exit 1; }
         echo ""
         echo "  接下来怎么做:"
-        echo "    → 运行 'q login' 登录（免费注册 AWS Builder ID）"
-        echo "    → 使用 'q chat' 开始对话"
+        echo "    → 运行 'kiro login' 登录（免费注册）"
+        echo "    → 使用 'kiro chat' 开始对话"
         echo "    → 免费使用"
         ;;
 
@@ -252,7 +244,7 @@ case "$TOOL" in
     *)
         print_fail "Unknown tool: $TOOL"
         echo ""
-        echo "  可用工具: claude-code, codex-cli, hermes, aider, opencode, amazon-q, copilot-cli, cline"
+        echo "  可用工具: claude-code, codex-cli, hermes, aider, opencode, kiro, copilot-cli, cline"
         echo "  桌面应用请在 Windows PowerShell 中安装"
         echo ""
         exit 1
