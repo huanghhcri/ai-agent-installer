@@ -31,6 +31,7 @@
   - [Amazon Q Developer CLI](#6-amazon-q-developer-cli)
   - [GitHub Copilot CLI](#7-github-copilot-cli)
   - [Cline](#8-cline)
+- [CC Switch：桌面应用 API 统一管理](#cc-switch桌面应用-api-统一管理)
 - [中国开发者专区](#中国开发者专区)
 - [常见问题](#常见问题)
 
@@ -106,11 +107,13 @@ winget install Anthropic.Claude
    - 注册后会赠送免费额度，可以直接使用
 3. 登录后就能直接对话了
 
-**进阶配置（可选）：**
+**配置自定义 API（可选）：**
 
-如果你想用自己的 API Key（比如通过 CC Switch 使用其他模型）：
-- 打开 Claude Desktop → 左下角齿轮 ⚙️ → Settings → API Keys
-- 或者安装 [CC Switch](https://github.com/nicepkg/claude-code-switcher) 来管理多个 API 提供商
+> ⚠️ Claude Desktop **没有**内置的自定义 API 设置界面。如果你想使用第三方 API 提供商（如国内中转站），需要通过 [CC Switch](https://github.com/farion1231/cc-switch) 来配置。
+
+1. 安装 [CC Switch](#cc-switch桌面应用-api-统一管理)（一行命令）
+2. 在 CC Switch 中添加你想要的 API 提供商
+3. 一键切换，Claude Desktop 即可使用自定义 API
 
 ---
 
@@ -121,17 +124,13 @@ winget install Anthropic.Claude
 **一行命令安装：**
 
 ```powershell
-# Windows — 下载安装包
-Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile "$env:TEMP\q-windows.zip"
-Expand-Archive -Path "$env:TEMP\q-windows.zip" -DestinationPath "$env:TEMP\q-windows" -Force
-& "$env:TEMP\q-windows\q.exe"
+winget install 9NBLGGH4XJL7 --source msstore
 ```
 
 **如果上面不行，手动安装：**
 1. 打开 Microsoft Store（开始菜单搜索）
 2. 搜索 "ChatGPT"
 3. 点击「获取」安装
-4. 或直接访问：https://apps.microsoft.com/detail/chatgpt/9NBLGGH4XJL7
 
 **安装后怎么用？**
 
@@ -200,7 +199,7 @@ winget install <找到的ID>
 2. 使用 OpenAI 账号登录
 3. 在输入框里描述你想做什么，Codex 会自动帮你写代码
 
-**注意：** Codex Desktop 使用的是 OpenAI 的 API，国内用户需要代理。如果你想用国产模型（如 MiMo），请使用 [Codex CLI](#2-codex-cli)。
+**注意：** Codex Desktop 是 Microsoft Store UWP 应用，**不读取** `~/.codex/config.toml` 配置文件，只能使用 OpenAI 官方 API。如果你想用国产模型（如 MiMo），请使用 [Codex CLI](#2-codex-cli)。
 
 ---
 
@@ -423,11 +422,15 @@ npm install -g @openai/codex@0.80.0
 **安装后怎么用？**
 
 1. 设置 OpenAI API Key：
+
    ```bash
    # Windows PowerShell
-   $env:OPENAI_API_KEY=sk-***   # Linux / macOS / WSL
-   export OPENAI_API_KEY=sk-...   ```
-   
+   $env:OPENAI_API_KEY="sk-..."
+
+   # Linux / macOS / WSL
+   export OPENAI_API_KEY=sk-...
+   ```
+
    > 💡 API Key 在 https://platform.openai.com/api-keys 获取
 
 2. 在终端里输入：
@@ -450,7 +453,14 @@ base_url = "https://token-plan-cn.xiaomimimo.com/v1"
 wire_api = "chat"
 EOF
 
-export OPENAI_API_KEY=你的MiMo...dex --version
+export OPENAI_API_KEY=你的MiMo_API_Key
+codex
+```
+
+**验证安装：**
+
+```bash
+codex --version
 # 应该显示：0.80.0
 ```
 
@@ -478,15 +488,16 @@ curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scri
    - **Terminal**：终端设置（默认即可）
 
 2. 配置 API Key：
-   
+
    如果你选择 OpenRouter（推荐，支持多种模型）：
    ```bash
    # 编辑 .env 文件
    nano ~/.hermes/.env
-   
+
    # 添加你的 API Key
-   OPENROUTER_API_KEY=***   ```
-   
+   OPENROUTER_API_KEY=你的Key
+   ```
+
    > 💡 OpenRouter API Key 在 https://openrouter.ai/keys 获取
 
 3. 开始使用：
@@ -535,7 +546,8 @@ pipx install aider-chat
 
 1. 设置 API Key（以 OpenAI 为例）：
    ```bash
-   export OPENAI_API_KEY=sk-...   ```
+   export OPENAI_API_KEY=sk-...
+   ```
 
 2. 进入你的项目目录，启动 Aider：
    ```bash
@@ -557,7 +569,10 @@ pipx install aider-chat
 aider --model claude-3-5-sonnet-20241022
 
 # 使用 DeepSeek
-aider --model deepseek --api-key deepseek=你的K...n使用本地模型（Ollama）
+export DEEPSEEK_API_KEY=你的Key
+aider --model deepseek --api-key deepseek=$DEEPSEEK_API_KEY
+
+# 使用本地模型（Ollama）
 aider --model ollama/deepseek-coder
 ```
 
@@ -587,12 +602,6 @@ curl -fsSL https://opencode.ai/install | bash
 powershell -c "irm https://opencode.ai/install.ps1 | iex"
 ```
 
-**如果上面不行，用官方安装脚本：**
-
-```bash
-curl -fsSL https://opencode.ai/install | bash
-```
-
 **安装后怎么用？**
 
 1. 进入项目目录：
@@ -607,7 +616,9 @@ curl -fsSL https://opencode.ai/install | bash
 
 ```bash
 # 使用 OpenAI
-export OPENAI_API_KEY=sk-... # 使用 Anthropic
+export OPENAI_API_KEY=sk-...
+
+# 使用 Anthropic
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
 
@@ -626,8 +637,10 @@ brew install amazon-q
 # Linux
 curl -fsSL https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-linux.tar.gz | tar -xz && ./q/install.sh
 
-# Windows (winget)
-winget install Amazon.QCLI
+# Windows (PowerShell)
+Invoke-WebRequest -Uri "https://desktop-release.codewhisperer.us-east-1.amazonaws.com/latest/q-windows.zip" -OutFile "$env:TEMP\q-windows.zip"
+Expand-Archive -Path "$env:TEMP\q-windows.zip" -DestinationPath "$env:TEMP\q-windows" -Force
+& "$env:TEMP\q-windows\q.exe"
 ```
 
 **安装后怎么用？**
@@ -710,6 +723,63 @@ code --install-extension saoudrizwan.claude-dev
 
 ---
 
+## CC Switch：桌面应用 API 统一管理
+
+### 什么是 CC Switch？
+
+[CC Switch](https://github.com/farion1231/cc-switch) 是一个桌面应用，可以**统一管理**多个 AI 工具的 API 提供商配置。支持的工具包括：
+
+- Claude Code CLI
+- **Claude Desktop**（这是配置 Claude Desktop 自定义 API 的唯一方式）
+- Codex CLI
+- Gemini CLI
+- OpenCode
+- OpenClaw
+- Hermes Agent
+
+**为什么需要它？**
+
+大部分桌面版 AI 应用（尤其是 Claude Desktop）**没有**内置的自定义 API 设置。如果你想用第三方 API 提供商（国内中转站、自建代理等），手动改配置文件容易出错。CC Switch 提供图形界面，一键切换。
+
+**CC Switch 核心功能：**
+
+- 🔌 **50+ 内置提供商预设** — 包含 AWS Bedrock、NVIDIA NIM、国内中转站等
+- 🔄 **一键切换** — 系统托盘快速切换，无需手动编辑配置文件
+- 🛡️ **安全可靠** — SQLite 数据库 + 原子写入，防止配置损坏
+- 📊 **用量追踪** — 查看消费、请求量、Token 使用趋势
+- 🔗 **统一 MCP & Skills** — 一个面板管理所有工具的 MCP 服务器和技能
+- ☁️ **云端同步** — 支持 Dropbox、OneDrive、iCloud、WebDAV 同步
+
+**一行命令安装（Windows）：**
+
+```powershell
+winget install farion1231.cc-switch
+```
+
+**或者手动安装：**
+
+前往 GitHub Releases 下载：https://github.com/farion1231/cc-switch/releases/latest
+
+- **Windows**：下载 `CC-Switch-v{version}-Windows.msi` 安装包
+- **macOS**：下载 `CC-Switch-v{version}-macOS.dmg`
+- **Linux**：下载 `CC-Switch-v{version}-Linux.AppImage`
+
+**官方网站：** https://ccswitch.io
+
+**使用 CC Switch 配置 Claude Desktop 自定义 API：**
+
+1. 安装并打开 CC Switch
+2. 在左侧工具列表中选择 **Claude Desktop**
+3. 点击「添加提供商」，选择预设或手动填写：
+   - API Base URL（如 `https://your-proxy.com/v1`）
+   - API Key
+4. 点击「切换」，CC Switch 会自动修改 Claude Desktop 的配置文件
+5. 重启 Claude Desktop 即可生效
+
+> 💡 CC Switch 同样支持为 Claude Code CLI、Codex CLI 等工具配置自定义 API，比手动编辑 `~/.claude/`、`~/.codex/` 配置文件方便得多。
+
+---
+
 ## 中国开发者专区
 
 ### 🌐 配置代理
@@ -753,7 +823,8 @@ export https_proxy=http://${WINDOWS_HOST}:7897
 **使用 MiMo 配置 Claude Code CLI：**
 
 ```bash
-export ANTHROPIC_API_KEY=你的MiMo...export ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic
+export ANTHROPIC_API_KEY=你的MiMo_API_Key
+export ANTHROPIC_BASE_URL=https://token-plan-cn.xiaomimimo.com/anthropic
 claude
 ```
 
@@ -768,13 +839,13 @@ base_url = "https://token-plan-cn.xiaomimimo.com/v1"
 wire_api = "chat"
 EOF
 
-export OPENAI_API_KEY=你的MiMo...
+export OPENAI_API_KEY=你的MiMo_API_Key
 ```
 
 **使用 DeepSeek 配置 Aider：**
 
 ```bash
-export DEEPSEEK_API_KEY=你的Deep...
+export DEEPSEEK_API_KEY=你的DeepSeek_API_Key
 aider --model deepseek --api-key deepseek=$DEEPSEEK_API_KEY
 ```
 
@@ -787,6 +858,10 @@ hermes setup
 # API Key: 你的 MiMo API Key
 # Model: mimo-v2.5-pro
 ```
+
+**使用 CC Switch 配置桌面应用（推荐）：**
+
+如果你使用 Claude Desktop 等桌面应用，推荐用 [CC Switch](https://github.com/farion1231/cc-switch) 一键配置国产模型 API，无需手动编辑配置文件。
 
 ---
 
@@ -851,6 +926,7 @@ A:
 | 想要最强大的开源 Agent | Hermes Agent |
 | 国内用户不想折腾代理 | Trae / DeepSeek + Aider |
 | 想要自主性最强的 Agent | Cline |
+| 想为桌面应用配置自定义 API | CC Switch |
 
 **Q: Codex CLI 为什么要锁定 v0.80.0？**
 
@@ -861,6 +937,10 @@ A: v0.80.0 是最后一个支持 `wire_api="chat"` 的版本。新版本默认�
 A:
 - **Claude Desktop**：图形界面，适合所有人，点点鼠标就能用
 - **Claude Code CLI**：命令行，适合开发者，可以在终端里让 Claude 直接读写你的代码文件
+
+**Q: Claude Desktop 能配置自定义 API 吗？**
+
+A: Claude Desktop **没有**内置的自定义 API 设置。你需要通过 [CC Switch](https://github.com/farion1231/cc-switch) 来配置。CC Switch 提供图形界面，支持 50+ 预设提供商，一键切换。
 
 **Q: 国内用哪个 AI 服务最划算？**
 

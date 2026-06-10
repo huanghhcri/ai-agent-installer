@@ -92,7 +92,7 @@ if [ -z "$TOOL" ]; then
     echo ""
     echo -e "  桌面应用请在 Windows PowerShell 中安装:"
     echo -e "    ${CYAN}winget install Anthropic.Claude${NC}"
-    echo -e "    ${CYAN}winget install Cursor.Cursor${NC}"
+    echo -e "    ${CYAN}winget install Anysphere.Cursor${NC}"
     echo -e "    ${CYAN}winget install Codeium.Windsurf${NC}"
     echo ""
     exit 0
@@ -127,7 +127,8 @@ case "$TOOL" in
         npm install -g @openai/codex@0.80.0 2>/dev/null && print_success "Installed (v0.80.0)" || { print_fail "Install failed"; exit 1; }
         echo ""
         echo "  接下来怎么做:"
-        echo "    → 设置 API Key: export OPENAI_API_KEY=***             echo "    → 输入 'codex' 启动"
+        echo "    → 设置 API Key: export OPENAI_API_KEY=你的Key"
+        echo "    → 输入 'codex' 启动"
         echo "    → 验证: codex --version"
         echo ""
         echo "  使用 MiMo 国产模型:"
@@ -137,6 +138,7 @@ case "$TOOL" in
         echo '    base_url = "https://token-plan-cn.xiaomimimo.com/v1"'
         echo '    wire_api = "chat"'
         echo "    EOF"
+        echo "    export OPENAI_API_KEY=你的MiMo_API_Key"
         ;;
 
     hermes)
@@ -163,11 +165,12 @@ case "$TOOL" in
         echo ""
         echo "  接下来怎么做:"
         echo "    → 进入项目目录，输入 'aider' 启动"
-        echo "    → 设置 API Key: export OPENAI_API_KEY=***             echo "    → 使用其他模型: aider --model deepseek"
+        echo "    → 设置 API Key: export OPENAI_API_KEY=你的Key"
+        echo "    → 使用其他模型: aider --model deepseek"
         echo "    → 使用 Claude: aider --model claude-3-5-sonnet-20241022"
         echo ""
         echo "  国产模型:"
-        echo "    export DEEPSEEK_API_KEY=*** # DeepSeek"
+        echo "    export DEEPSEEK_API_KEY=你的Key"
         echo "    aider --model deepseek --api-key deepseek=\$DEEPSEEK_API_KEY"
         ;;
 

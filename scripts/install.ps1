@@ -170,7 +170,7 @@ $Tools = @{
         Type = "cli"
         Prereq = "node"
         Install = { npm install -g @openai/codex@0.80.0 }
-        Next = @("设置 API Key: `$env:OPENAI_API_KEY=***             "输入 'codex' 启动", "验证: codex --version (应显示 0.80.0)")
+        Next = @("设置 API Key: `$env:OPENAI_API_KEY=***", "输入 'codex' 启动", "验证: codex --version (应显示 0.80.0)")
     }
     'hermes' = @{
         Name = "Hermes Agent"
@@ -186,7 +186,7 @@ $Tools = @{
         Type = "cli"
         Prereq = "python"
         Install = { pip install aider-chat }
-        Next = @("进入项目目录，输入 'aider' 启动", "设置 API Key: `$env:OPENAI_API_KEY=***             "使用其他模型: aider --model deepseek")
+        Next = @("进入项目目录，输入 'aider' 启动", "设置 API Key: `$env:OPENAI_API_KEY=***", "使用其他模型: aider --model deepseek")
     }
     'opencode' = @{
         Name = "OpenCode"
