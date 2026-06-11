@@ -167,6 +167,7 @@ winget install Anysphere.Cursor
 
 - 支持导入 VS Code 的插件和设置（首次打开时会提示）
 - 支持配置自定义 API Key（Settings → Models → Add Model）
+  - ⚠️ 配置自定义 API Key 需要开通 **Pro 会员**（$20/月），免费版只能使用 Cursor 自带的 AI 额度
 
 ---
 
@@ -224,6 +225,11 @@ winget install Codeium.Windsurf
    - 选中代码后 `Ctrl + L` 解释代码
 
 **优势：** 免费额度比 Cursor 多，对预算有限的开发者很友好。
+
+**进阶配置：**
+
+- 支持配置自定义 API Key（Bring Your Own Key）
+  - ⚠️ 配置自定义 API Key 需要开通**付费计划**（Pro $15/月），免费版只能使用 Windsurf 自带的 AI 额度
 
 ---
 
